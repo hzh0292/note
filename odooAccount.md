@@ -1,4 +1,4 @@
-[Odoo相关财务概念的讲解](https://www.zhihu.com/people/dz.80serp)
+[Odoo相关财务概念的讲解](https://zhuanlan.zhihu.com/p/25706160)
 
 ## 一、记账凭证（Account Move）
 
