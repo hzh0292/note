@@ -58,7 +58,7 @@ Odoo的支付，有两种模式，一是**单个支付**，一是**批量支付*
 
 Odoo的支付管理功能，输入好各支付行后，也可以让系统生成银行支付电子文件。或者将一个大额支付拆成多个银行帐号支付。
 
-**Odoo** **提供自动或手动核销（reconcile）功能**。例如，支付时候，系统会自动匹配业务伙伴的“应 付账款”，用支付金额核销对应“应付账款”,并且，标记该应付账款对应的凭据（Invoice）为已支付（自动勾上Invoice上的属性 “Paid/Reconciled”）。只要是可核销科目（科目设置画面上，勾上属性”Recocile”），系统就会试图自动核销。常见的可核销科目是 “应付账款”和“应收账款”。
+**Odoo提供自动或手动核销（reconcile）功能**。例如，支付时候，系统会自动匹配业务伙伴的“应 付账款”，用支付金额核销对应“应付账款”,并且，标记该应付账款对应的凭据（Invoice）为已支付（自动勾上Invoice上的属性 “Paid/Reconciled”）。只要是可核销科目（科目设置画面上，勾上属性”Recocile”），系统就会试图自动核销。常见的可核销科目是 “应付账款”和“应收账款”。
 
 ## 五、财务重要参数配置
 
@@ -118,8 +118,8 @@ Invoice就是发票，为什么要叫凭据呢？
 第一点，我同样也觉得不妥，因为资产负债表是指一个时点的值，即在某个时点上，单位所有拥有的资产、负债、所有者权益。各个账户的增减额是指一段时间内的变动，通常 这种一定时间内的变动应该是损益表（现在统一称为利润表了）的来源。
 关于第二点，Invoice除了发票的意思，还有发货清单、服务费用清单的意思。至于为什么叫凭据，我也不清楚。但大陆会计上叫凭证，台湾叫传票，windows上倒是叫凭据。
 
-附：牛津英汉双语词典上的解释
-invoice
+附：牛津英汉双语词典上的解释  
+invoice  
 / ˈɪnvɔɪs; ˋɪnvɔɪs/ n ~ (for sth) (commerce 商) list of goods sold or services provided with the price(s) charged, esp sent as a bill 发票; 发货清单; 服务费用清单: make out an invoice for the goods 开发货清单.
 \> invoice v (commerce 商)
 [Tn] make a list of (such goods) 开（货物）的发票: invoice the orders, goods, etc 开定单﹑ 货物等的发票.
