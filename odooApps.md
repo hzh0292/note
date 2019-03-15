@@ -36,3 +36,13 @@
 #### 3.[Add Serial Number Via Barcode On Picking(Shipment/Delivery) in odoo](https://www.odoo.com/apps/modules/12.0/barcode/)
 #### by BrowseInfo
 #### 89.00 €
+
+### 四、Project Job Costing
+
+#### 1.[Project Job Costing (Contracting) and Job Cost Sheet](https://www.odoo.com/apps/modules/12.0/odoo_job_costing_management/)
+#### by Probuse Consulting Service Pvt. Ltd.
+#### 138.00 €
+
+#### 2.[Project Job Costing and Job Cost Sheet With Material Request Odoo](https://www.odoo.com/apps/modules/12.0/bi_odoo_job_costing_management/)
+#### by BrowseInfo
+#### 97.00 €
