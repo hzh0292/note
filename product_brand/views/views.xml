@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_brand_search_form_view" model="ir.ui.view">
+        <field name="name">product.brand.search.form</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <search string="产品品牌">
+                <field name="name" string="品牌名"/>
+                <field name="partner_id" string="品牌商"/>
+            </search>
+        </field>
+    </record>
+
+    <act_window
+            id="action_open_brand_products"
+            name="该品牌产品"
+            res_model="product.template"
+            view_type="form"
+            view_mode="kanban,form,tree"
+            domain="[('product_brand_id', '=', active_id)]"/>
+
+    <act_window
+            id="action_open_single_product_brand"
+            name="品牌"
+            res_model="product.brand"
+            view_type="form"
+            view_mode="kanban,form,tree"
+            target="current"
+            domain="[('product_ids', 'in', active_id)]"/>
+
+    <record id="view_product_brand_form" model="ir.ui.view">
+        <field name="name">product.brand.form</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_open_brand_products)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-cubes">
+                            <field name="products_count" widget="statinfo" string="个产品"/>
+                        </button>
+                    </div>
+                    <field name="logo" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="name" string="品牌名称" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" string="品牌商"/>
+                        </group>
+                    </group>
+                    <group string="品牌介绍">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_product_brand_tree" model="ir.ui.view">
+        <field name="name">product.brand.tree</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <tree string="product.brand">
+                <field name="name" string="品牌名称"/>
+                <field name="description" string="品牌描述"/>
+                <field name="partner_id" string="品牌商"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_product_brand_kanban" model="ir.ui.view">
+        <field name="name">product.brand.kanban</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="logo"/>
+                <field name="products_count"/>
+                <field name="description"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('product.brand', 'logo', record.id.raw_value)" alt="Logo"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <h4>
+                                    <field name="name"/>
+                                </h4>
+                                <div>
+                                    <a name="%(product_brand.action_open_brand_products)d" type="action">
+                                        <t t-esc="record.products_count.value"/>
+                                        个产品
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_product_template_search_brand" model="ir.ui.view">
+        <field name="name">product.template.search.brand</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="default_code" string="型号"/>
+                <field name="product_brand_id" string="品牌"/>
+                <filter string="品牌" name="groupby_brand" domain="[]"
+                        context="{'group_by' : 'product_brand_id'}"/>
+                <separator/>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_template_form_brand_add" model="ir.ui.view">
+        <field name="name">product.template.product.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <field name="sale_ok" position="before">
+                <field name="product_brand_id" placeholder="选择品牌"/>
+                <div/>
+            </field>
+            <!-- 修改处开始 2019年03月19日12:24:52 成本价显示控制-->
+            <field name="standard_price" position="replace">
+                <field name="standard_price" widget="monetary" groups="product_brand.group_price_manager"
+                       options="{'currency_field': 'currency_id'}"/>
+            </field>
+            <!-- 修改处结尾 2019年03月19日12:24:52 -->
+        </field>
+    </record>
+
+    <record id="view_product_template_kanban_brand" model="ir.ui.view">
+        <field name="name">product kanban view: add brand</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_details')]/strong[1]" position="after">
+                <div>
+                    <a t-if="record.product_brand_id" type="action"
+                       name="%(action_open_single_product_brand)d">
+                        <field name="product_brand_id"/>
+                    </a>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_variant_kanban_brand" model="ir.ui.view">
+        <field name="name">product variant kanban view: add brand</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_details')]/strong[1]" position="after">
+                <div>
+                    <a t-if="record.product_brand_id" type="open">
+                        <field name="product_brand_id"/>
+                    </a>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_template_tree_brand" model="ir.ui.view">
+        <field name="name">product tree view: add brand</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="product_brand_id" string="品牌"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_product_variant_tree_brand" model="ir.ui.view">
+        <field name="name">product variant tree view: add brand</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="product_brand_id" string="品牌"/>
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_product_brand">
+        <field name="name">品牌管理</field>
+        <field name="res_model">product.brand</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,form,tree</field>
+    </record>
+
+    <menuitem
+            name="产品品牌"
+            id="menu_product_brand"
+            action="action_product_brand"
+            parent="sale.prod_config_main"/>
+
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="退货单" attrs="{'invisible': [('returned_ids', '=', [])]}">
+                    <field name="returned_ids"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <!--继承报价单/销售订单的表单视图做定制-->
+    <record id="sale_order_jeanphy" model="ir.ui.view">
+        <field name="name">sale_order_jeanphy</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!--增加一个字段显示产品的预测数量，太空仓-->
+            <xpath expr="//page[1]/field[1]/tree[1]/field[@name='product_uom_qty']" position="after">
+                <field name="buffer_store" string="太空倉"/>
+            </xpath>
+
+            <!--增加一个字段交货日期-->
+            <xpath expr="//page[1]/field[1]/tree[1]/field[@name='product_uom_qty']" position="after">
+                <field name="date_planned"/>
+            </xpath>
+
+            <!--增加一个字段交货日期，在打开的表单视图中同样显示-->
+            <xpath expr="//field[@name='price_unit'][1]" position="before">
+                <field name="date_planned"/>
+            </xpath>
+
+            <!--修改第二个确认订单按钮，让其在订单交货日期大于30天时必须通过销售经理审核才能确认。-->
+            <xpath expr="//button[@name='action_confirm'][2]" position="replace">
+                <button name="action_confirm" string="確認訂單" type="object"
+                        attrs="{'invisible':['|',('state', 'not in', ['draft']),('overdue', '=', True)]}"/>
+                <button name="action_confirm" string="確認訂單" type="object"
+                        attrs="{'invisible': ['|',('state', 'not in', ['draft']),('overdue', '!=', True)]}"
+                        groups="sales_team.group_sale_manager"/>
+            </xpath>
+
+            <!--在客户后面增加两个字段，交货>30和是否需要定金，并设定触发条件决定其是否显示-->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="overdue" attrs="{'invisible': [('overdue', '=', False)]}"/>
+                <field name="need_downpayment" attrs="{'invisible': [('need_downpayment', '=', False)]}"/>
+            </xpath>
+
+            <!--隐藏承诺交货日期-->
+            <xpath expr="//page/group/group/field[@name='commitment_date']" position="replace">
+            </xpath>
+
+            <!--将承诺交货日期提到单据的首页，作为交货日期-->
+            <xpath expr="//field[@name='validity_date']" position="replace">
+                <field name="commitment_date" string="交貨日期" placeholder="請在此處填寫訂單的最晚交貨日期"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!--在报价单/销售订单的列表视图用红色标识交货期大于30天的记录-->
+    <record id="view_quotation_tree_jeanphy" model="ir.ui.view">
+        <field name="name">sale_order_tree_jeanphy</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+
+            <!--为Tree视图增加一个属性-->
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-danger">(overdue==True) and (state!='sale')</attribute>
+            </xpath>
+
+            <!--添加对应隐藏字段-->
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="overdue" invisible="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="product_template_view_form_inherit_version_jeanphy" model="ir.ui.view">
+        <field name="name">product.template.view.form.inherit.version.jeanphy</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <group name="group_general" position="inside">
+                <field name="a2_name" attrs="{'invisible': [('a2_name', '=', False)]}"/>
+                <field name="last_purchase_date" attrs="{'invisible':
+                               [('last_purchase_date', '=', False)]}"/>
+                <field name="bill_of_materials" attrs="{'invisible':
+                               [('bill_of_materials', '=', False)]}"/>
+                <field name="substitutes_exist" attrs="{'invisible':
+                               [('substitutes_exist', '=', False)]}"/>
+                <field name="cost_is_adjusted" attrs="{'invisible':
+                               [('cost_is_adjusted', '=', False)]}"/>
+                <field name="series_name" attrs="{'invisible':
+                	       [('series_name', '=', False)]}"/>
+            </group>
+        </field>
+    </record>
+
+    <record id="barcode_scanning_inventory" model="ir.ui.view">
+        <field name="name">Barcode Scanning Inventory</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='location_id']" position="after">
+                <field name="barcode" string="扫描条码"/>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="after">
+                <field name="date_planned"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
