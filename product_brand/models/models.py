@@ -106,6 +106,8 @@ class StockMove(models.Model):
                 line.date_planned = line.sale_line_id.date_planned
             elif line.purchase_line_id:
                 line.date_planned = line.purchase_line_id.date_planned.date()
+            else:
+                line.date_planned = line.picking_id.scheduled_date.date()
 
 
 class SaleOrderLine(models.Model):
