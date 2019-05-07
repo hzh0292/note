@@ -125,7 +125,7 @@ class SaleOrderLine(models.Model):
             if r.order_id.commitment_date and not r.date_planned:
                 r.date_planned = r.order_id.commitment_date.strftime('%Y-%m-%d')
 
-    @api.onchange('d_date')
+    @api.onchange('date_planned')
     def _onchange_date_planned_gt_commitment_date(self):
         for r in self:
             if not r.date_planned or r.date_planned > r.order_id.commitment_date.date():
