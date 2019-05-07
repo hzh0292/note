@@ -104,7 +104,7 @@ class StockMove(models.Model):
         for line in self:
             if line.sale_line_id:
                 line.date_planned = line.sale_line_id.date_planned
-            else:
+            elif line.purchase_line_id:
                 line.date_planned = line.purchase_line_id.date_planned.date()
 
 
