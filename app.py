@@ -6,7 +6,7 @@ import functools
 import xmlrpc.client
 from tornado.options import define, options
 
-HOST = '13.231.137.58'
+HOST = 'localhost'
 PORT = 8069
 DB = 'demo'
 USER = 'admin'
